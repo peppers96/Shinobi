@@ -2590,6 +2590,12 @@ s.camera=function(x,e,cn,tx){
             }
             //save this detection result in SQL, only coords. not image.
             if(d.mon.details.detector_save==='1'){
+		    if(d.details.time){
+			    var time = d.details.time;
+			    delete d.details.time;
+			    s.sqlQuery('INSERT INTO Events (ke,mid,details,time) VALUES (?,?,?,?)',[d.ke,d.id,JSON.stringify(d.details),time])
+		    }
+		    else
                 s.sqlQuery('INSERT INTO Events (ke,mid,details) VALUES (?,?,?)',[d.ke,d.id,JSON.stringify(d.details)])
             }
             if(d.mon.details.detector_command_enable==='1'&&!s.group[d.ke].mon[d.id].detector_command){
